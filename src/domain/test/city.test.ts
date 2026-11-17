@@ -1,5 +1,6 @@
 import { describe, beforeEach, test, expect } from "vitest";
 import City, { calculateDurationDays } from "../city.ts";
+import Accommodation from "../accommodation.ts";
 
 function createCity(): City {
   return new City(
@@ -8,6 +9,7 @@ function createCity(): City {
     new Date("2023-05-01"),
     new Date("2023-05-04"),
     "Notas",
+    new Accommodation("Hotel", 100)
   );
 }
 
@@ -160,6 +162,8 @@ describe("Duration in days", () => {
       "TestCountry",
       new Date("2023-05-01"),
       new Date("2023-05-01"),
+      "Notes",
+      new Accommodation("Hotel", 100)
     );
     expect(singleDayCity.getDurationDays()).toBe(1);
   });
@@ -169,5 +173,24 @@ describe("Duration in days", () => {
     city.setDateTo(new Date("2023-05-01"));
 
     expect(city.getDurationDays()).toBe(0);
+  });
+});
+
+describe("Accommodation", () => {
+  let city: City;
+  beforeEach(() => {
+    city = createCity();
+  });
+
+  test("Get accommodation", () => {
+    expect(city.getAccommodation().getName()).toBe("Hotel");
+    expect(city.getAccommodation().getCost()).toBe(100);
+  });
+
+  test("Set accommodation", () => {
+    city.addAccommodation(new Accommodation("Hotel 2", 1000));
+
+    expect(city.getAccommodation().getName()).toBe("Hotel 2");
+    expect(city.getAccommodation().getCost()).toBe(1000);
   });
 });
