@@ -1,5 +1,7 @@
 import { describe, beforeEach, test, expect } from "vitest";
 import TripManager from "../tripManager.ts";
+import Accommodation from "../accommodation.ts";
+import City from "../city.ts";
 
 describe("TripManager", () => {
   let manager: TripManager;
@@ -12,7 +14,17 @@ describe("TripManager", () => {
   });
 
   test("find city by name", () => {
-    // TODO: Agregar test para la función findCityByName
+    const city = new City(
+    "TestCity",
+    "TestCountry",
+    new Date("2023-05-01"),
+    new Date("2023-05-04"),
+    "Notas",
+    new Accommodation("Hotel", 100)
+  );
+    manager.addCity(city);
+
+    expect(manager.findCityByName("TestCity")).toBe(city);
   });
 
   test("find city by name returns null if not found", () => {

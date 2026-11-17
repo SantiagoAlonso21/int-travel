@@ -24,7 +24,7 @@ describe("City name", () => {
   });
 
   test("should throw error if city name is empty", () => {
-    // TODO: Implementar validación de nombre vacío en la clase City
+    expect(() => city.setName(" ")).toThrow();
   });
 });
 
@@ -47,6 +47,10 @@ describe("City country", () => {
     expect(() => city.setCountry(undefined)).toThrow(
       "Country must be a string",
     );
+  });
+
+  test("should throw error if country is not a string", () => {
+    expect(city.getCountry()).toBe("TestCountry");
   });
 });
 
