@@ -1,5 +1,6 @@
 import TripManager from "./domain/tripManager.ts";
 import City from "./domain/city.ts";
+import Accommodation from "./domain/accommodation.ts";
 
 const manager = new TripManager();
 const form = document.getElementById("city-form") as HTMLFormElement | null;
@@ -20,17 +21,21 @@ function renderCities(): void {
     const country = city.getCountry ? city.getCountry() || "" : "";
     const duration = city.getDurationDays() ? city.getDurationDays() : "";
     const notesText = city.getNotes ? String(city.getNotes() || "") : "";
+    const accName = city.getAccommodation().getName();
+    const accCost = city.getAccommodation().getCost();
     const notesHtml = notesText
       ? notesText
       : '<span class="text-muted">Sin datos</span>';
     tr.innerHTML = `<td>
     <strong>${city.getName()}</strong>
     </td>
-    <td>${country}</td>
+    <span class="badge badge-light">${country}</span>
     <td>${duration ? `${duration} días` : "—"}</td>
     <td>${dateFrom}</td>
     <td>${dateTo}</td>
-    <td>${notesHtml}</td>`;
+    <td>${notesHtml}</td>
+    <td>${accName}</td>
+    <td>${accCost}</td>`;
     citiesTbody.appendChild(tr);
   });
 }
@@ -38,22 +43,21 @@ function renderCities(): void {
 function handleCityFormSubmit(e: SubmitEvent): void {
   e.preventDefault();
   const name = (document.getElementById("city-name") as HTMLInputElement).value;
-  const country = (document.getElementById("city-country") as HTMLInputElement)
-    .value;
-  const dateFrom = (
-    document.getElementById("city-date-from") as HTMLInputElement
-  ).value;
-  const dateTo = (document.getElementById("city-date-to") as HTMLInputElement)
-    .value;
-  const notes = (document.getElementById("city-notes") as HTMLTextAreaElement)
-    .value;
+  const country = (document.getElementById("city-country") as HTMLInputElement).value;
+  const dateFrom = (document.getElementById("city-date-from") as HTMLInputElement).value;
+  const dateTo = (document.getElementById("city-date-to") as HTMLInputElement).value;
+  const notes = (document.getElementById("city-notes") as HTMLTextAreaElement).value;
+  const accName = (document.getElementById("accommodation-name") as HTMLInputElement).value;
+  const accCost = Number((document.getElementById("accommodation-cost") as HTMLInputElement).value);
 
+  const accommodation = new Accommodation(accName, accCost); 
   const city = new City(
     name,
     country,
     new Date(dateFrom),
     new Date(dateTo),
     notes,
+    accommodation
   );
   if (!city) {
     showToast("Error", "No se pudo crear la ciudad", "danger");
