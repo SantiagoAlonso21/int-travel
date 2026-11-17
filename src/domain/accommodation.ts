@@ -1,5 +1,4 @@
 class Accommodation {
-  // TODO: implementar clase Accommodation con los campos name y cost
   #name!: string;
   #cost!: number;
 
